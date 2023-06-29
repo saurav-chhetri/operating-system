@@ -1,51 +1,52 @@
 #include<stdio.h>
- int main()
-{
-    int burst_time[20],p[20],waiting_time[20],tat[20],i,j,n,total=0,pos,temp;
-    float avg_waiting_time,avg_tat;
-    printf("please enter number of process: ");
+int main(){
+    int i,j,n,p[10],bt[10],tat[10],comp[30],wat[10],temp,sum1=0,sum2=0;
+     float tat1=0,wat1=0;
+    
+    printf("enter the process\n");
     scanf("%d",&n);
-    printf("\n enter the Burst Time:\n");
+    printf("enter the process\n");
     for(i=0;i<n;i++)
     {
-        printf("p%d:",i+1);
-        scanf("%d",&burst_time[i]);
-        p[i]=i+1;
+    scanf("%d",&p[i]);
     }
-
-    for(i=0;i<n;i++)
-    {
-        pos=i;
-        for(j=i+1;j<n;j++)
-        {
-            if(burst_time[j]<burst_time[pos])
-                pos=j;
-        }
-        temp=burst_time[i];
-        burst_time[i]=burst_time[pos];
-        burst_time[pos]=temp;
-        temp=p[i];
-        p[i]=p[pos];
-        p[pos]=temp;
+ printf("enter the process burst time\n");
+ for(i=0;i<n;i++){
+     scanf("%d",&bt[i]);
+ }
+for(i=0;i<n;i++){
+    for(j=0;j<n-i-1;j++){
+        if(bt[j]>bt[j+1]){
+            temp=bt[j];
+            bt[j]=bt[j+1];
+            bt[j+1]=temp;
+            temp=p[j];
+            p[j]=p[j+1];
+            p[j+1]=temp;
+     }
     }
-    waiting_time[0]=0;
-    for(i=1;i<n;i++)
-    {
-        waiting_time[i]=0;
-        for(j=0;j<i;j++)
-            waiting_time[i]+=burst_time[j];
-        total+=waiting_time[i];
-    }
-    avg_waiting_time=(float)total/n;
-    total=0;
-    printf("\nProcess\t    Burst Time    \tWaiting Time\tTurnaround Time");
-    for(i=0;i<n;i++)
-    {
-        tat[i]=burst_time[i]+waiting_time[i];
-        total+=tat[i];
-        printf("\np%d\t\t  %d\t\t    %d\t\t\t%d",p[i],burst_time[i],waiting_time[i],tat[i]);
-    }
-    avg_tat=(float)total/n;
-    printf("\n\n the average Waiting Time=%f",avg_waiting_time);
-    printf("\n  the average Turnaround Time=%f\n",avg_tat);
+}
+/*printf("process\t  burst time\n");
+for(i=0;i<n;i++){
+  printf("%d \t\t%d\n",p[i],bt[i]);  
+}*/
+for(i=0;i<n;i++){
+    sum1=sum1+bt[i];
+    tat[i]=sum1;
+    wat[i]=tat[i]-bt[i];
+}
+printf("process \tburst time \t tat \t \t waiting time\n");
+for(i=0;i<n;i++){
+printf("%d \t\t%d\t\t %d \t\t %d\n",p[i],bt[i],tat[i],wat[i]);
+}
+for(i=0;i<n;i++){
+    sum1=tat1;
+    tat1=sum1+tat[i];
+    sum2=wat1;
+    wat1=sum2+wat[i];
+}
+wat1=wat1/n;
+tat1=tat1/n;
+printf("the average turn around time is:\n %f",tat1);
+printf("\nthe average waiting time is:\n %f",wat1);
 }
